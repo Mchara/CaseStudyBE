@@ -1,5 +1,6 @@
 package org.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,5 +22,6 @@ public class Continent {
     private String name;
 
     @OneToMany(mappedBy = "continent")
+    @JsonIgnore
     private List<Region> regions;
 }

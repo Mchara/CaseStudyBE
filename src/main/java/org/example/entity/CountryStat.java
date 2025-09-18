@@ -9,6 +9,10 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class CountryStat {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "stat_id")
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "country_id")

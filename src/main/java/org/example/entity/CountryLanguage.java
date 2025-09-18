@@ -10,6 +10,9 @@ import javax.persistence.*;
 @Setter
 public class CountryLanguage {
 
+    @EmbeddedId
+    private CountryLanguageId id;
+
     @ManyToOne
     @MapsId("countryId")
     @JoinColumn(name = "country_id")
