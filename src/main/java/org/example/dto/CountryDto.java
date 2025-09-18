@@ -7,6 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class CountryDto {
     private String name;
-    private Double area;
+    private Long area;
     private String countryCode2;
 }
