@@ -21,8 +21,9 @@ public class CountryStatsService {
     }
 
     public List<ContinentRegionStatDto> getFilteredStats(List<Long> regionIds, Integer yearFrom, Integer yearTo) {
-        if (regionIds != null && regionIds.isEmpty()) {
-            regionIds = null;
-        }
-        return countryStatsRepository.findFilteredStats(regionIds, yearFrom, yearTo);}
+        if (regionIds == null || regionIds.isEmpty()) {
+            return countryStatsRepository.findFilteredStatsAllRegions(yearFrom, yearTo);
+        } else {
+            return countryStatsRepository.findFilteredStatsWithRegions(regionIds, yearFrom, yearTo);
+        }}
 }

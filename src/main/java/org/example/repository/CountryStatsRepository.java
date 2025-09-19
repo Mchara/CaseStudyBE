@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CountryStatsRepository extends JpaRepository<CountryStat, Integer> {
+public interface CountryStatsRepository extends JpaRepository<CountryStat, Long> {
 
     @Query("SELECT new org.example.dto.CountryStatsDto(" +
             "c.name, c.countryCode3, cs.year, cs.population, cs.gdp) " +
@@ -24,19 +24,28 @@ public interface CountryStatsRepository extends JpaRepository<CountryStat, Integ
             ")")
     List<CountryStatsDto> findMaxGdpPerPopulation();
 
-    @Query("SELECT new org.example.dto.ContinentRegionStatDto(" +
-            "co.name, r.name, c.name, cs.year, cs.population, cs.gdp) " +
+
+    @Query("SELECT new org.example.dto.ContinentRegionStatDto(co.name, r.name, c.name, cs.year, cs.population, cs.gdp) " +
             "FROM CountryStat cs " +
             "JOIN cs.country c " +
             "JOIN c.region r " +
             "JOIN r.continent co " +
-            "WHERE (:regionIds IS NULL OR r.id IN :regionIds) " +
+            "WHERE (:yearFrom IS NULL OR cs.year >= :yearFrom) " +
+            "AND (:yearTo IS NULL OR cs.year <= :yearTo) " +
+            "ORDER BY co.name, r.name, c.name, cs.year")
+    List<ContinentRegionStatDto> findFilteredStatsAllRegions(@Param("yearFrom") Integer yearFrom,
+                                                             @Param("yearTo") Integer yearTo);
+
+    @Query("SELECT new org.example.dto.ContinentRegionStatDto(co.name, r.name, c.name, cs.year, cs.population, cs.gdp) " +
+            "FROM CountryStat cs " +
+            "JOIN cs.country c " +
+            "JOIN c.region r " +
+            "JOIN r.continent co " +
+            "WHERE r.id IN :regionIds " +
             "AND (:yearFrom IS NULL OR cs.year >= :yearFrom) " +
             "AND (:yearTo IS NULL OR cs.year <= :yearTo) " +
             "ORDER BY co.name, r.name, c.name, cs.year")
-    List<ContinentRegionStatDto> findFilteredStats(
-            @Param("regionIds") List<Long> regionIds,
-            @Param("yearFrom") Integer yearFrom,
-            @Param("yearTo") Integer yearTo
-    );
+    List<ContinentRegionStatDto> findFilteredStatsWithRegions(@Param("regionIds") List<Long> regionIds,
+                                                              @Param("yearFrom") Integer yearFrom,
+                                                              @Param("yearTo") Integer yearTo);
 }
