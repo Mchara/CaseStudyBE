@@ -44,7 +44,7 @@ public class CountryStatsController {
             @RequestParam(required = false) Integer yearTo
     ) {
         List<ContinentRegionStatDto> stats = countryStatsService.getFilteredStats(regionIds, yearFrom, yearTo);
-        return ResponseEntity.ok(stats); // Always return a list, even if empty
+        return ResponseEntity.ok(stats);
     }
 
 

@@ -63,9 +63,9 @@ class CountryStatsControllerTest {
 
         ResponseEntity<List<ContinentRegionStatDto>> response = countryStatsController.getFilteredStats(null, null, null);
 
-        assertEquals(200, response.getStatusCodeValue()); // now 200 instead of 204
+        assertEquals(200, response.getStatusCodeValue());
         assertNotNull(response.getBody());
-        assertTrue(response.getBody().isEmpty()); // empty list
+        assertTrue(response.getBody().isEmpty());
         verify(countryStatsService, times(1)).getFilteredStats(null, null, null);
     }
 
