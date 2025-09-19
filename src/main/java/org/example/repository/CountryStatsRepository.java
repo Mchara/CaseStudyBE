@@ -30,14 +30,13 @@ public interface CountryStatsRepository extends JpaRepository<CountryStat, Integ
             "JOIN cs.country c " +
             "JOIN c.region r " +
             "JOIN r.continent co " +
-            "WHERE (:regionId IS NULL OR r.id = :regionId) " +
+            "WHERE (:regionIds IS NULL OR r.id IN :regionIds) " +
             "AND (:yearFrom IS NULL OR cs.year >= :yearFrom) " +
             "AND (:yearTo IS NULL OR cs.year <= :yearTo) " +
             "ORDER BY co.name, r.name, c.name, cs.year")
     List<ContinentRegionStatDto> findFilteredStats(
-            @Param("regionId") Long regionId,
+            @Param("regionIds") List<Long> regionIds,
             @Param("yearFrom") Integer yearFrom,
             @Param("yearTo") Integer yearTo
     );
-
 }

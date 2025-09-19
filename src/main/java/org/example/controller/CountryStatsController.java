@@ -37,12 +37,14 @@ public class CountryStatsController {
         }
     }
 
-    @GetMapping("/filter")
+    @GetMapping("/filtered")
     public ResponseEntity<List<ContinentRegionStatDto>> getFilteredStats(
-            @RequestParam(required = false) Long regionId,
+            @RequestParam(required = false) List<Long> regionIds,
             @RequestParam(required = false) Integer yearFrom,
             @RequestParam(required = false) Integer yearTo
     ) {
-        return ResponseEntity.ok(countryStatsService.getFilteredStats(regionId, yearFrom, yearTo));
+        List<ContinentRegionStatDto> stats = countryStatsService.getFilteredStats(regionIds, yearFrom, yearTo);
+        return ResponseEntity.ok(stats);
     }
+
 }

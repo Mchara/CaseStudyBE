@@ -19,9 +19,10 @@ public class CountryStatsService {
     public List<CountryStatsDto> getMaxGdpPerPopulation() {
         return countryStatsRepository.findMaxGdpPerPopulation();
     }
-    public List<ContinentRegionStatDto> getFilteredStats(Long regionId,
-                                                         Integer yearFrom,
-                                                         Integer yearTo) {
-        return countryStatsRepository.findFilteredStats(regionId, yearFrom, yearTo);
-    }
+
+    public List<ContinentRegionStatDto> getFilteredStats(List<Long> regionIds, Integer yearFrom, Integer yearTo) {
+        if (regionIds != null && regionIds.isEmpty()) {
+            regionIds = null;
+        }
+        return countryStatsRepository.findFilteredStats(regionIds, yearFrom, yearTo);}
 }
