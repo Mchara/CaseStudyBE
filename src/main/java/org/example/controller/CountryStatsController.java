@@ -1,13 +1,11 @@
 package org.example.controller;
 
+import org.example.dto.ContinentRegionStatDto;
 import org.example.dto.CountryStatsDto;
 import org.example.service.CountryStatsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -37,5 +35,14 @@ public class CountryStatsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Collections.emptyList());
         }
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<ContinentRegionStatDto>> getFilteredStats(
+            @RequestParam(required = false) Long regionId,
+            @RequestParam(required = false) Integer yearFrom,
+            @RequestParam(required = false) Integer yearTo
+    ) {
+        return ResponseEntity.ok(countryStatsService.getFilteredStats(regionId, yearFrom, yearTo));
     }
 }
