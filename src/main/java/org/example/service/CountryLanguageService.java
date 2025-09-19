@@ -19,9 +19,8 @@ public class CountryLanguageService {
     }
 
     public List<CountryLanguageDto> getLanguagesByCountryCode(String countryCode2) {
-        List<CountryLanguageDto> languages = countryLanguageRepository.findLanguagesByCountryCode(countryCode2);
-        languages.forEach(System.out::println);
-        return languages;
+        return countryLanguageRepository.findLanguagesByCountryCode(countryCode2);
+
     }
 }
 
