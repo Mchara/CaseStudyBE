@@ -30,6 +30,16 @@ class CountryStatsControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    @Test
+    void testGetMaxGdpPerPopulation_ReturnsEmptyList() {
+        when(countryStatsService.getMaxGdpPerPopulation()).thenReturn(Collections.emptyList());
+
+        ResponseEntity<List<CountryStatsDto>> response = countryStatsController.getMaxGdpPerPopulation();
+
+        assertEquals(204, response.getStatusCodeValue());
+        assertNull(response.getBody());
+        verify(countryStatsService, times(1)).getMaxGdpPerPopulation();
+    }
 
     @Test
     void testGetMaxGdpPerPopulation_ReturnsStats() {
@@ -48,14 +58,15 @@ class CountryStatsControllerTest {
     }
 
     @Test
-    void testGetMaxGdpPerPopulation_ReturnsNoContent() {
-        when(countryStatsService.getMaxGdpPerPopulation()).thenReturn(Collections.emptyList());
+    void testGetFilteredStats_ReturnsEmptyList() {
+        when(countryStatsService.getFilteredStats(null, null, null)).thenReturn(Collections.emptyList());
 
-        ResponseEntity<List<CountryStatsDto>> response = countryStatsController.getMaxGdpPerPopulation();
+        ResponseEntity<List<ContinentRegionStatDto>> response = countryStatsController.getFilteredStats(null, null, null);
 
-        assertEquals(204, response.getStatusCodeValue());
-        assertNull(response.getBody());
-        verify(countryStatsService, times(1)).getMaxGdpPerPopulation();
+        assertEquals(200, response.getStatusCodeValue()); // now 200 instead of 204
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().isEmpty()); // empty list
+        verify(countryStatsService, times(1)).getFilteredStats(null, null, null);
     }
 
     @Test
@@ -87,16 +98,5 @@ class CountryStatsControllerTest {
         assertNotNull(response.getBody());
         assertEquals(2, response.getBody().size());
         verify(countryStatsService, times(1)).getFilteredStats(Arrays.asList(1L, 2L), 1970, 1991);
-    }
-
-    @Test
-    void testGetFilteredStats_ReturnsNoContent() {
-        when(countryStatsService.getFilteredStats(null, null, null)).thenReturn(Collections.emptyList());
-
-        ResponseEntity<List<ContinentRegionStatDto>> response = countryStatsController.getFilteredStats(null, null, null);
-
-        assertEquals(204, response.getStatusCodeValue());
-        assertNull(response.getBody());
-        verify(countryStatsService, times(1)).getFilteredStats(null, null, null);
     }
 }
